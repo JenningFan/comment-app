@@ -50,12 +50,24 @@ class CommentApp extends Component {
         
         this._saveComments(comments)
     }
+    handleDeleteComment(index) {
+        const comments = this.state.comments
+        //删除comments数组中index下标对应的元素
+        comments.splice(index, 1)
+        this.setState({
+            comments
+        })
+        this._saveComments(comments)
+    }
     render() {
         return (
             <div className='wrapper'>
-            {/* 通过props给子组件CommentInput传递class CommentApp中定义的函数作为回调函数 */}
-              <CommentInput onSubmit={this.handleSubmitComment.bind(this)} />
-              <CommentList comments={this.state.comments} />
+                {/* 通过props给子组件CommentInput传递class CommentApp中定义的函数作为回调函数 */}
+                <CommentInput onSubmit={this.handleSubmitComment.bind(this)} />
+                <CommentList
+                    comments={this.state.comments}
+                    onDeleteComment={this.handleDeleteComment.bind(this)}
+                />
             </div>
         )
     }
