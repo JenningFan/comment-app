@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import wrapWithLoadData from './wrapWithLoadData'
 
 class CommentInput extends Component {
 
@@ -7,33 +8,16 @@ class CommentInput extends Component {
         onSubmit: PropTypes.func
     }
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            userName: '',
+            userName: props.data || '',
             content: ''
         }
     }
 
-    componentWillMount() {
-        this._loadUsername()
-    }
-
     componentDidMount() {
         this.textarea.focus()
-    }
-
-    _saveUsername(username) {
-        localStorage.setItem('username', username)
-    }
-
-    _loadUsername() {
-        const username = localStorage.getItem('username')
-        if (username) {
-            this.setState({
-                userName: username
-            })
-        }
     }
 
     handleUsernameChange(event) {
@@ -47,7 +31,7 @@ class CommentInput extends Component {
         })
     }
     handleUsernameBlur(event) {
-        this._saveUsername(event.target.value)
+        this.props.saveData(event.target.value)
     }
     handleSubmit() {
         //监听onSubmit，如果父组件有使用名为onSubmit的prop，就执行传入的回调函数，并将userName，content作为入参传过去
@@ -95,4 +79,7 @@ class CommentInput extends Component {
         )
     }
 }
+
+CommentInput = wrapWithLoadData(CommentInput, 'username')
+
 export default CommentInput

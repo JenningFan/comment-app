@@ -1,32 +1,15 @@
 import React, {Component} from 'react'
 import CommentInput from './CommentInput'
 import CommentList from './CommentList'
+import wrapWithLoadData from './wrapWithLoadData'
 
 class CommentApp extends Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            comments: []
+            comments: props.data || []
         }
-    }
-
-    componentWillMount() {
-        this._loadComments()
-    }
-
-    _loadComments() {
-        let comments = localStorage.getItem('comments')
-        if (comments) {
-            comments = JSON.parse(comments)
-            this.setState({
-                comments
-            })
-        }
-    }
-
-    _saveComments(comments) {
-        localStorage.setItem('comments', JSON.stringify(comments))
     }
 
     //声明一个回调函数，最终会在子组件CommentInput的作用域内被调用执行，相当于通过该函数去接收子组件传递的数据，实现父子组件通信
@@ -34,6 +17,7 @@ class CommentApp extends Component {
         if (!comment) {
             return
         }
+
         if (!comment.userName) {
             return alert('请输入用户名')
         }
@@ -48,7 +32,7 @@ class CommentApp extends Component {
             comments
         })
         
-        this._saveComments(comments)
+        this.props.saveData(comments)
     }
     handleDeleteComment(index) {
         const comments = this.state.comments
@@ -57,7 +41,7 @@ class CommentApp extends Component {
         this.setState({
             comments
         })
-        this._saveComments(comments)
+        this.props.saveData(comments)
     }
     render() {
         return (
@@ -72,5 +56,9 @@ class CommentApp extends Component {
         )
     }
 }
+
+CommentApp = wrapWithLoadData(CommentApp, 'comments')
+
+
 export default CommentApp
 
