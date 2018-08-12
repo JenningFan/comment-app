@@ -7,7 +7,6 @@ class CommentInput extends Component {
         onSubmit: PropTypes.func,
         onUsernameBlur: PropTypes.func,
         username: PropTypes.string
-
     }
 
     static defaultProps = {

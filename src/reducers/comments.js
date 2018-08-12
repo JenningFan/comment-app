@@ -47,3 +47,6 @@ const deleteComment = (commentIndex) => {
         commentIndex
     }
 }
+
+export default commentsReducer
+export { initComments, addComment, deleteComment }
